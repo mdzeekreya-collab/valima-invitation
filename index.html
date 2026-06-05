@@ -55,11 +55,10 @@
         function App() {
             const [isPlaying, setIsPlaying] = useState(false);
             const [currentSlide, setCurrentSlide] = useState(0);
-            const [isMuted, setIsMuted] = useState(false); // Music starts unmuted by default now
+            const [isMuted, setIsMuted] = useState(false);
             const [videoEnded, setVideoEnded] = useState(false);
             const [toastMessage, setToastMessage] = useState('');
             
-            // Reference to hold the background audio
             const audioRef = useRef(null);
 
             const totalSlides = 5;
@@ -85,7 +84,6 @@
                 return () => clearInterval(timer);
             }, [isPlaying, videoEnded]);
 
-            // Sync Mute button with Audio element
             useEffect(() => {
                 if (audioRef.current) {
                     audioRef.current.muted = isMuted;
@@ -96,7 +94,6 @@
                 setIsPlaying(true); 
                 setVideoEnded(false); 
                 setCurrentSlide(0); 
-                // Play music upon user interaction
                 if (audioRef.current) {
                     audioRef.current.currentTime = 0;
                     audioRef.current.play().catch(err => console.log("Audio playback failed: ", err));
@@ -135,10 +132,10 @@
             return (
                 <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-0 sm:p-4 font-serif">
                   
-                  {/* Background Audio Link - Mere Yaar Ki Shaadi Hai (Instrumental) */}
+                  {/* Points dynamically to your custom uploaded song file */}
                   <audio 
                     ref={audioRef} 
-                    src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" 
+                    src="song.mp3" 
                     loop
                   />
 
