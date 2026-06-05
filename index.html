@@ -99,4 +99,174 @@
                 document.body.removeChild(textArea);
             };
 
-            const showToast
+            const showToast = (msg) => { setToastMessage(msg); setTimeout(() => setToastMessage(''), 3000); };
+
+            return (
+                <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-0 sm:p-4 font-serif">
+                  <div className="relative w-full max-w-[400px] h-[100dvh] sm:h-[800px] sm:max-h-[90vh] bg-[#FAF8F5] sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col text-[#3D0C16]">
+                    
+                    {toastMessage && (
+                      <div className="absolute top-16 left-1/2 -translate-x-1/2 z-[60] bg-[#3D0C16] text-[#FAF8F5] px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-toast whitespace-nowrap">
+                        {toastMessage}
+                      </div>
+                    )}
+
+                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-10 flex items-center justify-center">
+                       <div className="w-[150%] h-[150%] animate-spin-slow animate-zoom-slow opacity-40">
+                          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full fill-[#96722B]">
+                            <path d="M100 0L110 40L150 30L130 65L170 85L130 100L170 115L130 135L150 170L110 160L100 200L90 160L50 170L70 135L30 115L70 100L30 85L70 65L50 30L90 40Z" />
+                          </svg>
+                       </div>
+                    </div>
+
+                    <div className="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-[#96722B] opacity-40 rounded-tl-xl z-10 pointer-events-none"></div>
+                    <div className="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-[#96722B] opacity-40 rounded-tr-xl z-10 pointer-events-none"></div>
+                    <div className="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-[#96722B] opacity-40 rounded-bl-xl z-10 pointer-events-none"></div>
+                    <div className="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-[#96722B] opacity-40 rounded-br-xl z-10 pointer-events-none"></div>
+
+                    {isPlaying && (
+                      <div className="absolute top-6 right-6 z-50 flex gap-4">
+                        <button onClick={() => setIsMuted(!isMuted)} className="p-2 bg-black/5 rounded-full backdrop-blur-sm text-[#96722B] transition hover:bg-black/10">
+                          {isMuted ? <VolumeXIcon /> : <Volume2Icon />}
+                        </button>
+                      </div>
+                    )}
+
+                    {(isPlaying || videoEnded) && (
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-black/5 z-50 flex">
+                        {[...Array(totalSlides)].map((_, index) => (
+                          <div key={index} className="flex-1 h-full mx-[1px] bg-black/10 overflow-hidden">
+                            <div 
+                              className={`h-full bg-[#3D0C16] transition-all duration-[5500ms] ease-linear origin-left`}
+                              style={{ 
+                                width: currentSlide > index ? '100%' : currentSlide === index && isPlaying ? '100%' : '0%',
+                                transitionDuration: currentSlide === index && isPlaying ? `${slideDuration}ms` : '0ms'
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="relative z-20 flex-1 flex flex-col items-center justify-center p-8 text-center h-full">
+                      
+                      {!isPlaying && !videoEnded && (
+                        <div className="flex flex-col items-center animate-fade-up">
+                          <div className="w-24 h-24 rounded-full border-2 border-[#96722B] flex items-center justify-center mb-6 animate-float">
+                            <StarIcon className="text-[#96722B]" size="40" />
+                          </div>
+                          <h1 className="font-heading text-3xl font-semibold text-[#3D0C16] mb-2 tracking-wide">Valima Invitation</h1>
+                          <p className="font-body text-sm text-[#3D0C16]/60 mb-12 uppercase tracking-widest">Mohammed Shaker Ali</p>
+                          
+                          <button onClick={startVideo} className="group relative px-8 py-3 bg-[#3D0C16] text-[#FAF8F5] rounded-full font-bold uppercase tracking-wider text-sm flex items-center gap-2 hover:bg-[#521320] transition-all overflow-hidden shadow-md">
+                            <PlayIcon /> Play Invitation
+                          </button>
+                        </div>
+                      )}
+
+                      {isPlaying && currentSlide === 0 && (
+                        <div className="flex flex-col items-center w-full">
+                          <div className="text-4xl text-[#96722B] mb-6 animate-fade-up font-body">﷽</div>
+                          <p className="font-body text-xs tracking-widest uppercase text-[#96722B] mb-8 animate-fade-up delay-300">
+                            In the name of Allah, <br/>the most beneficent & merciful
+                          </p>
+                          <div className="relative py-8 animate-fade-up delay-500">
+                            <HeartIcon className="absolute top-0 left-1/2 -translate-x-1/2 text-[#96722B]/20" size="24" />
+                            <p className="font-heading italic text-lg leading-relaxed text-[#3D0C16] mt-4 px-4">
+                              "Oh Allah bless & guide this couple to the best of Understanding, happiness, prosperity and success."
+                            </p>
+                            <p className="font-heading text-[#96722B] mt-4 font-semibold">(Ameen)</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {isPlaying && currentSlide === 1 && (
+                        <div className="flex flex-col items-center w-full">
+                          <p className="font-body text-xs tracking-widest uppercase text-[#96722B] mb-4 animate-fade-up">With the blessings from:</p>
+                          <h2 className="font-heading text-lg font-semibold mb-1 animate-fade-up delay-100 text-[#3D0C16]">Late Mrs. & Mr. Abdul Raheem Sahab</h2>
+                          <p className="font-script text-2xl text-[#96722B] mb-8 animate-fade-up delay-300">Dange Wale</p>
+                          <div className="w-16 h-[1px] bg-[#96722B]/30 mb-8 animate-fade-up delay-500"></div>
+                          <h2 className="font-heading text-2xl font-bold mb-2 animate-fade-up delay-700 text-[#3D0C16]">Mrs. & Mr. Mohammed Rafi</h2>
+                          <p className="font-body text-xs text-[#96722B] tracking-wider mb-8 animate-fade-up delay-700">( Plumber )</p>
+                          <p className="font-heading italic text-sm text-[#3D0C16]/80 leading-loose animate-fade-up delay-900 px-2">Solicit your gracious presence on the auspicious occasion of</p>
+                          <h3 className="font-body text-2xl text-[#96722B] font-bold mt-4 tracking-widest animate-fade-up delay-1200 drop-shadow-md">VALIMA CEREMONY</h3>
+                        </div>
+                      )}
+
+                      {isPlaying && currentSlide === 2 && (
+                        <div className="flex flex-col items-center w-full">
+                          <p className="font-body text-sm tracking-widest uppercase text-[#3D0C16]/60 mb-4 animate-fade-up">Of my Brother</p>
+                          <h1 className="font-script text-5xl sm:text-6xl text-[#96722B] my-2 animate-fade-up delay-100 drop-shadow-sm text-center leading-tight">Mohammed Shaker Ali</h1>
+                          <p className="font-body text-xs tracking-widest text-[#3D0C16]/60 mb-8 animate-fade-up delay-300">(Employee UAE)</p>
+                          <div className="flex items-center gap-4 my-4 animate-fade-up delay-500">
+                            <div className="w-12 h-[1px] bg-[#96722B]"></div>
+                            <span className="font-heading italic text-lg text-[#96722B]">With</span>
+                            <div className="w-12 h-[1px] bg-[#96722B]"></div>
+                          </div>
+                          <p className="font-body text-sm tracking-widest uppercase text-[#3D0C16]/60 mt-6 mb-2 animate-fade-up delay-700">Daughter of</p>
+                          <h2 className="font-heading text-xl font-bold text-[#3D0C16] animate-fade-up delay-900">Mr. Mohammed Younus Sahab</h2>
+                          <p className="font-script text-2xl text-[#96722B] mt-1 mb-2 animate-fade-up delay-900">Dange Wale</p>
+                          <p className="font-body text-xs tracking-widest text-[#3D0C16]/60 animate-fade-up delay-1200">R/o Rao Taleem, Bidar</p>
+                        </div>
+                      )}
+
+                      {isPlaying && currentSlide === 3 && (
+                        <div className="flex flex-col items-center w-full">
+                          <h3 className="font-script text-4xl text-[#96722B] mb-8 animate-fade-up">Valima Dinner</h3>
+                          <div className="bg-[#3D0C16]/5 p-6 rounded-2xl border border-[#96722B]/20 w-full backdrop-blur-sm animate-fade-up delay-300">
+                            <p className="font-heading text-xl text-[#3D0C16] mb-2 font-semibold">Friday, 12th June 2026</p>
+                            <p className="font-body text-xs text-[#96722B] mb-6 tracking-wider">(25th Zilhajja 1447 Hijri)</p>
+                            <div className="flex items-center justify-center gap-2 text-[#3D0C16] mb-6">
+                              <div className="w-8 h-[1px] bg-[#96722B]/30"></div>
+                              <p className="font-heading text-lg font-medium">After Isha (8:30 P.M.)</p>
+                              <div className="w-8 h-[1px] bg-[#96722B]/30"></div>
+                            </div>
+                            <p className="font-body text-sm tracking-widest text-[#96722B] mb-2 uppercase">Venue:</p>
+                            <h4 className="font-heading text-xl font-bold text-[#3D0C16] mb-1">NIZAM'S FUNCTION PALACE</h4>
+                            <p className="font-body text-sm text-[#3D0C16]/70">Fort Road, Bidar</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {isPlaying && currentSlide === 4 && (
+                        <div className="flex flex-col items-center w-full">
+                          <div className="mb-8 animate-fade-up flex justify-center text-[#96722B]">
+                            <svg width="100" height="30" viewBox="0 0 100 30" fill="currentColor">
+                              <path d="M50 15 Q 25 -5 0 15 Q 25 35 50 15 M50 15 Q 75 -5 100 15 Q 75 35 50 15" stroke="currentColor" fill="none" strokeWidth="1"/>
+                              <circle cx="50" cy="15" r="3"/>
+                            </svg>
+                          </div>
+                          <h3 className="font-heading italic text-2xl text-[#96722B] mb-8 animate-fade-up delay-300">With Best Compliments From:</h3>
+                          <div className="font-body text-xs sm:text-sm leading-loose text-[#3D0C16]/80 text-center px-4 animate-fade-up delay-500">
+                            Md. Zakir Hussain, Md. Naser Hussain, <br/>Md. Nazim Hussain, Md. Tabrez, <br/>Md. Azhar, Md. Zikriya, <br/>Md. Samiuddin, Md. Muzammil, <br/>Md. Riyaz
+                          </div>
+                          <div className="w-24 h-[1px] bg-[#96722B]/30 my-8 animate-fade-up delay-700"></div>
+                          <p className="font-heading font-bold text-lg text-[#96722B] tracking-widest uppercase animate-fade-up delay-900">Relatives & Friends</p>
+                        </div>
+                      )}
+
+                      {videoEnded && (
+                        <div className="flex flex-col items-center animate-fade-up w-full px-6">
+                           <h2 className="font-script text-5xl text-[#96722B] mb-4">Thank You</h2>
+                           <p className="font-body text-sm text-[#3D0C16]/60 mb-10 tracking-widest uppercase text-center">Looking forward to your presence</p>
+                           <div className="flex flex-col gap-4 w-full max-w-[250px]">
+                             <button onClick={handleShare} className="w-full py-3 bg-[#3D0C16] text-[#FAF8F5] rounded-full font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:bg-[#521320] transition-all shadow-md">
+                              <Share2Icon /> Share Link
+                             </button>
+                             <button onClick={restartVideo} className="w-full py-3 border border-[#96722B] text-[#96722B] rounded-full font-body uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:bg-[#96722B]/5 transition-colors">
+                              <RotateCcwIcon /> Replay
+                             </button>
+                           </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
